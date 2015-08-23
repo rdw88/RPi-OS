@@ -7,7 +7,6 @@ _start:
 
 .section .text
 main:
-  mov sp, #0x8000
   pinNum .req r0
   pinFunc .req r1
   mov pinNum,#16
