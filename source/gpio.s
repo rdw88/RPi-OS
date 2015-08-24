@@ -1,6 +1,7 @@
 .globl GetGpioAddress
 .globl SetGpioFunction
 .globl SetGpio
+.globl GpioFlashInfinite
 
 GetGpioAddress:
   ldr r0, =0x20200000
@@ -57,3 +58,29 @@ SetGpio:
   .unreq setBit
   .unreq gpioAddr
   pop {pc}
+
+
+GpioFlashInfinite:
+  waitTime .req r4
+  mov waitTime, r0
+
+  mov r0, #16
+  mov r1, #1
+  bl SetGpioFunction
+
+  error$:
+    mov r0, #16
+    mov r1, #0
+    bl SetGpio
+
+    mov r0, waitTime
+    bl systemWait
+
+    mov r0, #16
+    mov r1, #1
+    bl SetGpio
+
+    mov r0, waitTime
+    bl systemWait
+
+    b error$

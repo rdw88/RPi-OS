@@ -6,43 +6,49 @@ _start:
   b main
 
 .section .text
+
 main:
-  pinNum .req r0
-  pinFunc .req r1
-  mov pinNum,#16
-  mov pinFunc,#1
-  bl SetGpioFunction
-  .unreq pinNum
-  .unreq pinFunc
+  mov sp, #0x8000
+  ldr r0, =1024
+  ldr r1, =768
+  mov r2, #16
+  bl InitializeFrameBuffer
 
-  ptrn .req r4
-  ldr ptrn,=pattern
-  ldr ptrn,[ptrn]
-  seq .req r5
-  mov seq,#0
+  teq r0, #0
+  bne noerror$
 
-  loop$:
-    pinNum .req r0
-    pinVal .req r1
-    mov pinNum,#16
-    mov pinVal,#1
-    lsl pinVal, seq
-    and pinVal, ptrn
-    bl SetGpio
-    .unreq pinNum
-    .unreq pinVal
-    add seq, #1
+  error$:
+    ldr r0, =150000
+    bleq GpioFlashInfinite
 
-    ldr r0, =250000
-    bl systemWait
+  noerror$:
+    mov r3, r0
+    mov r0, #0
+    mov r1, #500
+    mov r2, #300
 
-    teq seq, #32
-    moveq seq, #0
+    bl DrawCharacter
 
-    b loop$
+    mov r3, r0
+    mov r0, #16
+    mov r1, #520
+    mov r2, #300
 
-.section .data
-.align 2
+    bl DrawCharacter
 
-pattern:
-  .int 0b11111111101010100010001000101010
+    mov r3, r0
+    mov r0, #32
+    mov r1, #540
+    mov r2, #300
+
+    bl DrawCharacter
+
+    mov r3, r0
+    mov r0, #48
+    mov r1, #560
+    mov r2, #300
+
+    bl DrawCharacter
+
+    forever$:
+    b forever$
