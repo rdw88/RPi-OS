@@ -10,14 +10,19 @@ DrawCharacter:
   ldr r8, =fontSize
   ldr r8, [r8, #4]
   cmp r0, r8
+  ldrhi r0, =1000000
+  bhi GpioFlashInfinite
   ldrls r8, =screenRes
   movls r9, r8
   ldrls r8, [r8]
   cmpls r1, r8
-  ldrhi r0, =150000
+  ldrhi r0, =250000
   bhi GpioFlashInfinite
   addls r9, #4
+  ldrls r9, [r9]
   cmpls r2, r9
+  ldrhi r0, =20000
+  bhi GpioFlashInfinite
   movhi pc, lr
   teq r3, #0
   moveq pc, lr
@@ -43,7 +48,7 @@ DrawCharacter:
     ldr frameBuffer, [r3, #32]
     mul r11, bytesPerRow, y
     add r11, x
-    add r11, r11
+    add r11, x
     add frameBuffer, r11
     mov offset, initOffset
 
@@ -87,44 +92,42 @@ DrawCharacter:
 
 
 /* r0=str, r1=x, r2=y, r3=frame buffer */
-/* First 2 bytes of string are the length of the string, remaining bytes are ascii codes */
+/* Null-terminating strings */
 DrawString:
   x .req r1
   y .req r2
   frameBuffer .req r3
   string .req r4
-  strlen .req r5
-  counter .req r6
+  counter .req r5
 
-  push {r4, r5, r6, r7, lr}
+  push {r4, r5, lr}
 
   mov string, r0
-  ldrh strlen, [string] /* load first two bytes of string (represent strlen) */
-  mov counter, #2
+  mov counter, #0
 
   strDrawLoop$:
+    ldrb r0, [string, counter]
+    teq r0, #0
+    beq strFinish$
     push {x, y}
-    ldr r0, [string, counter]
     bl DrawCharacter
     pop {x, y}
 
     mov frameBuffer, r0
     add x, #10
     add counter, #1
-    sub r7, counter, #2
-    cmp r7, strlen
-    bl strDrawLoop$
+    b strDrawLoop$
+
+  strFinish$:
+  mov r0, frameBuffer
 
   .unreq x
   .unreq y
   .unreq frameBuffer
   .unreq string
-  .unreq strlen
   .unreq counter
 
-  pop {r4, r5, r6, r7, pc}
-
-
+  pop {r4, r5, pc}
 
 
 
