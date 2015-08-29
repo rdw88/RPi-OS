@@ -1,3 +1,4 @@
 #!/bin/bash
+make clean
 make
-sudo cp kernel.img /media/ryan/boot1/
+sudo cp build/kernel.img /media/ryan/boot1/

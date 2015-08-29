@@ -3,12 +3,12 @@
 
 
 _start:
-  b main
+  mov sp, #0x8000
+  bl main
 
 .section .text
 
 main:
-  mov sp, #0x8000
   ldr r0, =screenRes
   ldr r1, [r0, #4]
   ldr r2, [r0, #8]
