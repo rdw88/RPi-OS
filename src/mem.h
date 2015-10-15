@@ -13,4 +13,6 @@ extern unsigned int GET16(unsigned int);
 
 extern unsigned int GET_BYTE(unsigned int);
 
+extern unsigned int GET_PICTURE(unsigned int);
+
 #endif

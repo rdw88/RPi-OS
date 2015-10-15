@@ -28,4 +28,6 @@ unsigned int gpu_mailboxRead(unsigned int channel);
 
 unsigned int init_frame_buffer(unsigned int width, unsigned int height, unsigned int bit_depth);
 
+void gpu_set_pixel(unsigned int color, unsigned int x, unsigned int y, unsigned int frame_buffer);
+
 #endif

@@ -2,6 +2,8 @@
 #include "gfx.h"
 #include "mem.h"
 #include "text.h"
+#include "image.h"
+
 
 void init(void) {
   unsigned int frame_buffer = init_frame_buffer(SCREEN_WIDTH, SCREEN_HEIGHT, BIT_DEPTH);
@@ -12,6 +14,5 @@ void init(void) {
     return;
   }
 
-  char *testString = "Hello, this is a test to see if the sentence will keep on going onto the next line when it overflows the screen alksjdflkasjdflkjsadlfkjasdlkfjlksadjflkasdjfkljsadlkfjsaldkfjlsakdjflksadjflkasjdflkjsadlfkjsaldkfjlkasjfewjioejwfoijweoifjweoifjoiwncoinvoinvoinewvoinweiovnoiwenvoiwnevionweoiniweonviowneivonwoienviowenviowevnoiwenvoiwnevoinwieonvoinweoiniwevoniowejf.\0";
-  gpu_draw_str(testString, 0, 0, frame_buffer);
+  draw_bitmap(GET_PICTURE(0), 0, 0, frame_buffer);
 }

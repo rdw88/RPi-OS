@@ -46,3 +46,4 @@ void gpu_draw_str(char *str, unsigned int x, unsigned int y, unsigned int frame_
     str++;
   }
 }
+

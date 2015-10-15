@@ -41,3 +41,15 @@ GET16:
 GET_BYTE:
   ldrb r0, [r0]
   bx lr
+
+
+.globl GET_PICTURE
+GET_PICTURE:
+	ldr r0, =PICTURE
+	bx lr
+
+.section .data
+.align 4
+PICTURE:
+	.incbin "picture.rpp"
+

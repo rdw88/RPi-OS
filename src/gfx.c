@@ -76,3 +76,14 @@ unsigned int init_frame_buffer(unsigned int width, unsigned int height, unsigned
 
   return buffer_ptr;
 }
+
+
+void gpu_set_pixel(unsigned int color, unsigned int x, unsigned int y, unsigned int frame_buffer) {
+	if (frame_buffer == 0) {
+		return;
+	}
+
+	unsigned int draw_buffer = GET32(frame_buffer + FRAME_BUFFER_POINTER_OFFSET);
+	draw_buffer += (x << 2) + ((y << 2) * SCREEN_WIDTH);
+	PUT32(draw_buffer, color);
+}
